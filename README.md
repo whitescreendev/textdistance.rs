@@ -100,8 +100,11 @@ assert!(r.val() == 2);
 assert!(r.nval() == 2./4.);
 ```
 
-1. The `Algorithm` trait provides `for_str`, `for_vec`, and `for_iter` to calculate the result for two strings, vectors (slices), or iterators respectively. In addition, there are `for_words` and `for_bigrams` methods that split the text into words or bigrams respectively before calculating the distance.
-1. Each method returns a `textdistance::Result` that provides methods to get absolute (`val`) or normalized (`nval`) value of the metric, distance (`dist` and `ndist`), or similarity (`sim` and `nsim`).
+The `for_str` method (and so all functions in the `str` and `nstr` modules) uses `String.chars` to split the string into Unicode scalar values and then runs it through the `for_iter` method.
+
+A precomposed character such as `é` (`U+00E9`) is one Unicode scalar value. However, the canonically equivalent decomposed representation `e` followed by a combining acute accent (`U+0301`) consists of two scalar values. As a result, canonically equivalent strings can produce different edit distances when their underlying Unicode representations differ. Applications that require canonical equivalence should normalize both inputs to the same Unicode normalization form before comparison. You can read more about Rust `char` representation in [the official Rust documentation](https://doc.rust-lang.org/std/primitive.char.html#representation).
+
+If you want each user-perceived character to be considered as a single symbol, including characters composed of multiple Unicode scalar values, use the [unicode-segmentation](https://crates.io/crates/unicode-segmentation) crate to iterate over extended grapheme clusters:
 
 ## Unicode support
 

@@ -100,17 +100,15 @@ assert!(r.val() == 2);
 assert!(r.nval() == 2./4.);
 ```
 
+
+
+## Unicode support
+
 The `for_str` method (and so all functions in the `str` and `nstr` modules) uses `String.chars` to split the string into Unicode scalar values and then runs it through the `for_iter` method.
 
 A precomposed character such as `é` (`U+00E9`) is one Unicode scalar value. However, the canonically equivalent decomposed representation `e` followed by a combining acute accent (`U+0301`) consists of two scalar values. As a result, canonically equivalent strings can produce different edit distances when their underlying Unicode representations differ. Applications that require canonical equivalence should normalize both inputs to the same Unicode normalization form before comparison. You can read more about Rust `char` representation in [the official Rust documentation](https://doc.rust-lang.org/std/primitive.char.html#representation).
 
 If you want each user-perceived character to be considered as a single symbol, including characters composed of multiple Unicode scalar values, use the [unicode-segmentation](https://crates.io/crates/unicode-segmentation) crate to iterate over extended grapheme clusters:
-
-## Unicode support
-
-The `for_str` method (and so all functions in the `str` and `nstr` modules) uses `String.chars` to split the string and then runs it through the `for_iter` method. So, `é` will be considered two distinct characters ("latin small letter e" and "combining acute accent"). Usually, that's ok and this is how Python works. You can read more in [the official Rust documentation](https://doc.rust-lang.org/std/primitive.char.html#representation).
-
-If you want `é` to be considered as a single symbol, use the [unicode-segmentation](https://crates.io/crates/unicode-segmentation) crate:
 
 ```rust
 use textdistance::{Algorithm, DamerauLevenshtein};

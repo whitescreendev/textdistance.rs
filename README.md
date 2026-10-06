@@ -122,6 +122,7 @@ let a = DamerauLevenshtein::default();
 let r = a.for_iter(g1, g2);
 assert!(r.val() == 1);
 ```
+For additional background on how Unicode normalization, grapheme segmentation, and text transformations can affect edit-distance inputs, see [Unicode text transformations and edit distance](https://www.levenshtein.net/unicode-text-transformations).
 
 ## Choosing the algorithm
 
